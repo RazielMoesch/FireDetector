@@ -50,3 +50,5 @@ class DetectFire():
   def preds_to_results(self, preds):
     score = torch.max(preds[0]["scores"])
     return score
+  
+  #change
