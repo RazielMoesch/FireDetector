@@ -35,13 +35,13 @@ example2.py demonstrates using the 'detect' method to get all the scores and bou
 
 ## Example Images
 
-###Example 1: Candle Fire Detection
+### Example 1: Candle Fire Detection
 ![Candle Fire Detection](examples/Candle_Predictions.png)
 
-###Example 2: Forest Fire Detection
+### Example 2: Forest Fire Detection
 ![Forest Fire Detection](examples/Forest_Predictions.png)
 
-###Example 3: Kitchen Fire Detection
+### Example 3: Kitchen Fire Detection
 ![Kitchen Fire Detection](examples/Kitchen_Predictions.png)
 
 ## Requirements
