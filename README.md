@@ -22,8 +22,11 @@ You can use the model to detect fire by running the 'FireDetector.detect' method
 ## Requirements
 
 torch==1.13.1: PyTorch for Torch tools
+
 torchvision==0.14.1: TorchVision for computer vision
+
 matplotlib==3.7.0: Matplotlib for visualization
+
 Pillow==9.4.0: Pillow, for image manipulation
 
 ## License
