@@ -7,6 +7,7 @@ This project uses a pre-trained Faster R-CNN model to detect fire in images. The
 - [Installation](#installation)
 - [Usage](#usage)
 - [Examples](#examples)
+- [Example Images](#example-images)
 - [Requirements](#requirements)
 - [Contributing](#contributing)
 - [License](#license)
@@ -31,6 +32,17 @@ The 'detect' method has other parameters such as 'graph_data' and 'threshold'
 example1.py demonstrates using the 'detect' method to get the highest score
 
 example2.py demonstrates using the 'detect' method to get all the scores and bounding boxes above the threshold
+
+## Example Images
+
+###Example 1: Candle Fire Detection
+![Candle Fire Detection](examples/Candle_Predictions.png)
+
+###Example 2: Forest Fire Detection
+![Forest Fire Detection](examples/Forest_Predictions.png)
+
+###Example 3: Kitchen Fire Detection
+![Kitchen Fire Detection](examples/Kitchen_Predictions.png)
 
 ## Requirements
 
