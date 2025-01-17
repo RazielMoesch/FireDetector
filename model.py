@@ -8,10 +8,13 @@ from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
 
 class FireDetector():
-  def __init__(self, saved_dict_path=os.path.join('models', 'firedetectordict1.pth'), num_classes=2):
+  def __init__(self, saved_dict_path=os.path.join('models', 'firedetectordict1.pth'), num_classes=2, device=None):
     self.saved_dict = saved_dict_path
     self.num_classes = num_classes
-    self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if not device:
+      self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    else:
+      self.device = device
 
     self.load_model()
 

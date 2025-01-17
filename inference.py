@@ -8,8 +8,14 @@ from matplotlib import patches
 
 
 class DetectFire():
-  def __init__(self, model_path):
-    self.detector = FireDetector(model_path, 2)
+  def __init__(self, model_path='models/firedetectordict1.pth', device=None):
+    if not device:
+      self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    else:
+      self.device = device
+
+    self.detector = FireDetector(model_path, 2, device=self.device)
+    
   
   def preprocess_image(self, image_path):
     image = Image.open(image_path).convert("RGB")
@@ -17,7 +23,7 @@ class DetectFire():
     return image
   
   def detect(self, image_path, graph_preds=False, threshold=.8):
-    image = self.preprocess_image(image_path)
+    image = self.preprocess_image(image_path).to(self.device)
     model = self.detector.model
     model.eval()
     with torch.inference_mode():
@@ -31,10 +37,13 @@ class DetectFire():
     return score
 
   def graph_preds(self, image, preds, threshold):
+    image  = image.squeeze()
     image = image.permute(1,2,0).cpu().numpy()
     boxes = preds[0]["boxes"].cpu().numpy()
     scores = preds[0]["scores"].cpu().numpy()
     fig, ax = plt.subplots()
+    ax.set_axis_off()
+  
     ax.imshow(image)
 
     for box, score in zip(boxes, scores):
@@ -44,11 +53,11 @@ class DetectFire():
         h = ymax - ymin
         rect = patches.Rectangle((xmin, ymin), w, h, linewidth=2, edgecolor='lightblue', facecolor='none')
         ax.add_patch(rect)
-        ax.text(xmin, ymin, f'Score: {score:.2f}', color='lightblue', fontsize= 12)
+        ax.text(xmin, ymin, f'Score: {(100*score):.2f}%', color='lightblue', fontsize= 12)
     plt.show()
   
   def preds_to_results(self, preds):
     score = torch.max(preds[0]["scores"])
     return score
   
-  #change
+  
