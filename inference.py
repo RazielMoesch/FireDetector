@@ -4,6 +4,7 @@ import torch
 import torchvision.transforms.functional as F
 import matplotlib.pyplot as plt
 from matplotlib import patches
+import numpy as np
 
 
 
@@ -27,18 +28,24 @@ class DetectFire():
     self.detector = FireDetector(model_path, 2, device=self.device)
     
   
-  def preprocess_image(self, image_path):
-    image = Image.open(image_path).convert("RGB")
-    image = F.to_tensor(image).unsqueeze(0)
+  def preprocess_image(self, image):
+    if isinstance(image, np.ndarray):
+      image = Image.fromarray(image)
+      image.convert("RGB")
+      image = F.to_tensor(image).unsqueeze(0)
+    else:
+      image = Image.open(image).convert("RGB")
+      image = F.to_tensor(image).unsqueeze(0)
     return image
   
-  def detect(self, image_path, return_boxes=False, graph_preds=False, threshold=.8):
+  def detect(self, image, return_boxes=False, return_as_np=False, graph_preds=False, threshold=.8):
     '''
     Method to perform detection of fire in an image
 
     Parameters:
-        image_path (str): Path to the image for detection
+        image (str or nparray): Path to the image for detection or a numpy array
         return_boxes (bool): Decide whether you want the bounding box info to be returned. Default:False
+        return_as_np (bool): Decide whether you want the bounding box info to be returned as a numpy array. Default:False. CONDTION: return_boxes=True
         graph_preds (bool): Decide whether you want a visual represenation of prediction. Default:False
         threshold (float): Number 0-1, only predictions with a higher likelyhood of being fire than the threshold will be graphed and returned
     
@@ -47,8 +54,12 @@ class DetectFire():
           returns the highest score
         return_boxes:True
           returns a tuple of tensors: (scores, boxes)
+        return_boxes:True, return_as_np:True
+          returns a tuple of np arrays: (scores, boxes)
     '''
-    image = self.preprocess_image(image_path).to(self.device)
+    
+      
+    image = self.preprocess_image(image).to(self.device)
     model = self.detector.model
     model.eval()
     with torch.inference_mode():
@@ -60,7 +71,12 @@ class DetectFire():
     score = self.preds_to_results(preds)
     if return_boxes:
       filter = preds[0]["scores"] > threshold
-      return ((preds[0]["scores"][filter].to(self.device)), (preds[0]["boxes"][filter].to(self.device)))
+      scores = preds[0]["scores"][filter]
+      boxes = preds[0]["boxes"][filter]
+      if return_as_np:
+        scores = scores.cpu().numpy()
+        boxes = boxes.cpu().numpy()
+      return ((scores), (boxes))
     else:
       return score.item()
 
@@ -85,6 +101,8 @@ class DetectFire():
     plt.show()
   
   def preds_to_results(self, preds):
+    if len(preds[0]["scores"])==0:
+      return 0
     score = torch.max(preds[0]["scores"])
     return score
   

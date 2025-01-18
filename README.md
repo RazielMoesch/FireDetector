@@ -33,6 +33,8 @@ example1.py demonstrates using the 'detect' method to get the highest score
 
 example2.py demonstrates using the 'detect' method to get all the scores and bounding boxes above the threshold
 
+example3.py demonstrates using the 'detect' methods' output together with opencv for a live inference
+
 ## Example Images
 
 ### Example 1: Candle Fire Detection
@@ -46,13 +48,17 @@ example2.py demonstrates using the 'detect' method to get all the scores and bou
 
 ## Requirements
 
-torch==1.13.1: PyTorch for Torch tools
+torch==1.13.1: PyTorch, for Torch tools
 
-torchvision==0.14.1: TorchVision for computer vision
+torchvision==0.14.1: TorchVision, for computer vision tools
 
-matplotlib==3.7.0: Matplotlib for visualization
+matplotlib==3.7.0: Matplotlib, for visualization
 
 Pillow==9.4.0: Pillow, for image manipulation
+
+opencv-python==4.5.5.64: OpenCV, for live inference
+
+numpy==1.21.6: NumPy, for manipulating tensors to better be used by other libraries
 
 ## License
 
